@@ -1,0 +1,140 @@
+syntax = "proto3";
+
+package remote.job.proto;
+
+import "google/protobuf/duration.proto";
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+
+option java_multiple_files = true;
+
+
+// JobService is a service that allows clients to create and manage asynchronous jobs
+service JobService {
+  // GetJob retrieves job details by job ID
+  rpc GetJob(GetJobRequest) returns (GetJobResponse);
+
+  // ListJobs retrieves a list of jobs based on the provided filters
+  rpc ListJobs(ListJobsRequest) returns (ListJobsResponse);
+
+  // CreateJob creates a new job to be executed by the job service
+  rpc CreateJob(CreateJobRequest) returns (CreateJobResponse);
+}
+
+// A JobEntity represents an existing job that can be executed by the service
+message JobEntity {
+  // Unique job identifier
+  string job_id = 1;
+
+  // Identifies the type of job worker that will execute the job
+  string worker_uri = 2;
+
+  // Job input parameters
+  JobParameters params = 3;
+
+  // Job pool identifier
+  string pool = 4;
+
+  // Earliest scheduled time for the job to be executed
+  google.protobuf.Timestamp scheduled_for = 5;
+
+  // Number of remaining times the job can be retried
+  int32 retries = 6;
+
+  // Maximum time the job can run before being terminated
+  google.protobuf.Duration timeout = 7;
+
+  // Current status of the job
+  JobStatus status = 8;
+
+  // Time the job was created
+  google.protobuf.Timestamp created_at = 9;
+}
+
+enum JobStatus {
+  JOB_STATUS_UNSPECIFIED = 0;
+
+  // Job is waiting to be executed
+  JOB_STATUS_SCHEDULED = 1;
+
+  // Job has failed and cannot be retried
+  JOB_STATUS_FAILED = 2;
+
+  // Job has been cancelled and will not be executed again
+  JOB_STATUS_CANCELLED = 3;
+
+  // Job has completed successfully
+  JOB_STATUS_COMPLETED = 4;
+
+  // Job has been suspended and will not be executed until manually resumed
+  JOB_STATUS_PARKED = 5;
+}
+
+// Request parameters to retrieve job details
+message GetJobRequest {
+  // Identifier of the job to retrieve
+  string job_id = 1;
+}
+
+// Response parameters describing a retrieved job
+message GetJobResponse {
+  // Job details
+  JobEntity job = 1;
+}
+
+// Request parameters for retrieving multiple jobs
+message ListJobsRequest {
+  // Maximum number of jobs to return
+  int32 page_size = 1;
+
+  // Token to retrieve the next page of jobs, from a previous ListJobsResponse
+  int32 page_token = 2;
+
+  // Job pool filter
+  string pool = 3;
+}
+
+// Response describing a list of jobs
+message ListJobsResponse {
+  // List of jobs
+  repeated JobEntity jobs = 1;
+
+  // Token to retrieve the next page of jobs
+  int32 next_page_token = 2;
+}
+
+// Request parameters to create a new job
+message CreateJobRequest {
+  // Identifies the type of job worker that will execute the job
+  string worker_uri = 1;
+
+  // Job input parameters
+  JobParameters params = 2;
+
+  // Job pool identifier
+  string pool = 3;
+
+  // Earliest scheduled time for the job to be executed
+  google.protobuf.Timestamp scheduled_for = 4;
+
+  // Number of times the job can be retried
+  int32 retries = 5;
+
+  // Maximum time the job can run before being terminated
+  google.protobuf.Duration timeout = 6;
+}
+
+// Response parameters describing a created job
+message CreateJobResponse {
+  // Identifier of the created job
+  string job_id = 1;
+  // TODO Include JobEntity?
+}
+
+// Generic grab-bag of job parameters
+message JobParameters {
+  google.protobuf.Struct data = 1;
+
+  // a test name
+  string new_param = 2;
+}
