@@ -210,5 +210,5 @@ replay_pid*
 bazel-bin
 bazel-out
 bazel-testlogs
-bazel-proto_idl
+bazel-remote_proto
 logs
