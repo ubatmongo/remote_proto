@@ -1,3 +1,4 @@
+load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
 load("@rules_proto//proto:defs.bzl", "proto_library")
 load("@build_stack_rules_proto//rules:proto_compile.bzl", "proto_compile")
 
@@ -18,4 +19,12 @@ proto_compile(
     outputs = ["remote_job_proto.srcjar"],
     plugins = ["@build_stack_rules_proto//plugin/builtin:java"],
     proto = "remote_job_proto_proto",
+)
+
+go_proto_library(
+    name = "remote_job_proto_go_proto",
+    compilers = ["@io_bazel_rules_go//proto:go_grpc"],
+    importpath = "remote/proto",
+    proto = ":remote_job_proto_proto",
+    visibility = ["//visibility:public"],
 )

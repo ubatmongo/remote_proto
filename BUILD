@@ -16,9 +16,9 @@ package(default_visibility = ["//visibility:public"])
 
 gazelle_binary(
     name = "gazelle-protobuf",
+    # languages = DEFAULT_LANGUAGES,
     languages = [
         "@bazel_gazelle//language/go",
-        # "@bazel_gazelle//language/java",
         "@bazel_gazelle//language/proto",
         # must be after the proto extension (order matters)
         "@build_stack_rules_proto//language/protobuf",
