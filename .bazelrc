@@ -1,0 +1,35 @@
+
+common --announce_rc
+common --noenable_bzlmod
+common --enable_workspace
+
+# strictness
+build --incompatible_default_to_explicit_init_py --noexperimental_build_transitive_python_runfiles
+build --incompatible_strict_action_env --action_env=PATH=/bin:/usr/bin:/usr/local/bin:/opt/homebrew/bin:/sbin --action_env=PYTHONNOUSERSITE=1
+
+# This flag affects the py_layer filter, due to changes in Bazel 6 for prepending the label with `@`
+# FUTURE: (Bazel 7) Try enabling bzlmod in order to be able to filter on `@@` and remove this option.
+build --noincompatible_unambiguous_label_stringification
+
+# things that are surprisingly not the default
+build --nosandbox_default_allow_network --incompatible_exclusive_test_sandboxed
+build --experimental_allow_tags_propagation
+test --build_tests_only
+build --enable_runfiles
+
+
+# "local" strategy relaxes Bazel sandboxing and thereby speeds up builds https://bazel.build/docs/user-manual#strategy
+build --strategy=Webpack=local
+
+# Used by java build. -XepDisableAllChecks skips Error Prone (errorprone.info) checks and thereby speeds up builds.
+build --javacopt="-XepDisableAllChecks"
+build --sandbox_debug
+build --verbose_failures
+build --verbose_explanations
+build --show_loading_progress
+build --show_progress
+build --subcommands
+build --color=yes
+build --curses=yes
+build --execution_log_json_file=/Users/udita.bose/spaces/remote_proto/logs/execution.json
+build --explain=/Users/udita.bose/spaces/remote_proto/logs/explain.log

@@ -1,0 +1,21 @@
+load("@rules_proto//proto:defs.bzl", "proto_library")
+load("@build_stack_rules_proto//rules:proto_compile.bzl", "proto_compile")
+
+proto_library(
+    name = "remote_job_proto_proto",
+    srcs = ["job.proto"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_google_protobuf//:duration_proto",
+        "@com_google_protobuf//:struct_proto",
+        "@com_google_protobuf//:timestamp_proto",
+    ],
+)
+
+proto_compile(
+    name = "remote_job_proto_java_compile",
+    outs = {"@build_stack_rules_proto//plugin/builtin:java": "remote/proto/remote_job_proto.srcjar"},
+    outputs = ["remote_job_proto.srcjar"],
+    plugins = ["@build_stack_rules_proto//plugin/builtin:java"],
+    proto = "remote_job_proto_proto",
+)
