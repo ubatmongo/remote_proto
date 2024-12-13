@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package remote.newproto;
+
+option java_multiple_files = true;
+
+message Hello {
+    string message = 1;
+    string name = 2;
+}
