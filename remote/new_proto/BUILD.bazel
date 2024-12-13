@@ -1,0 +1,16 @@
+load("@rules_proto//proto:defs.bzl", "proto_library")
+load("@build_stack_rules_proto//rules:proto_compile.bzl", "proto_compile")
+
+proto_library(
+    name = "remote_newproto_proto",
+    srcs = ["hello.proto"],
+    visibility = ["//visibility:public"],
+)
+
+proto_compile(
+    name = "remote_newproto_java_compile",
+    outs = {"@build_stack_rules_proto//plugin/builtin:java": "remote/new_proto/remote_newproto.srcjar"},
+    outputs = ["remote_newproto.srcjar"],
+    plugins = ["@build_stack_rules_proto//plugin/builtin:java"],
+    proto = "remote_newproto_proto",
+)
