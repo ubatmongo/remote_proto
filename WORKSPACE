@@ -16,9 +16,11 @@ http_archive(
     ],
 )
 
-load("@rules_java//java:repositories.bzl", "rules_java_dependencies")
+load("@rules_java//java:repositories.bzl", "rules_java_dependencies", "rules_java_toolchains")
 
 rules_java_dependencies()
+
+rules_java_toolchains()
 
 RULES_JVM_EXTERNAL_TAG = "6.0"
 
