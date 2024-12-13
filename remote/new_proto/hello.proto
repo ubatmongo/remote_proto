@@ -7,4 +7,5 @@ option java_multiple_files = true;
 message Hello {
     string message = 1;
     string name = 2;
+    string another = 3;
 }
