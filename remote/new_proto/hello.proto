@@ -9,3 +9,15 @@ message Hello {
     string name = 2;
     string another = 3;
 }
+
+message GetHelloRequest {
+    Hello hello = 1;
+}
+
+message GetHelloResponse {
+    string helloback = 1;
+}
+
+service HelloService {
+    rpc SayHello(GetHelloRequest) returns (GetHelloResponse);
+}
